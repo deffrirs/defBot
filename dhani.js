@@ -2035,22 +2035,23 @@ break
 //══════════[ FITUR GROUP ]══════════//
 
 case 'welcome':
-               if (!isGroupAdmins) return reply(mess.only.admin)
-               if (!isGroup) return reply(mess.only.group)
-               if (args.length < 1) return reply('!welcome enable/disable')
-               if ((args[0]) === 'enable') {
-               if (isWelkom) return reply('Udah aktif')
-               welkom.push(from)
-               fs.writeFileSync('./database/group/welcome.json', JSON.stringify(welkom))
-               reply('Sukses mengaktifkan fitur welcome di group ini ✔️')
-               } else if ((args[0]) === 'disable') {
-               welkom.splice(from, 1)
-               fs.writeFileSync('./database/group/welcome.json', JSON.stringify(welkom))
-               reply('Sukses menonaktifkan fitur welcome di group ini ✔️')
-               } else {
-               reply('Enable untuk mengaktifkan, disable untuk menonaktifkan')
+if (!isGroup) return reply(mess.only.group)
+if (!isGroupAdmins && !mek.key.fromMe) return reply(mess.only.admin)
+if (args.length < 1) return reply(`Ketik :\n${prefix}welcome on untuk mengaktifkan\n${prefix}welcome off untuk menonaktifkan`)
+if ((args[0]) === 'on') {
+if (isWelkom) return reply('*welcome sudah aktif !!*')
+_welkom.push(from)
+fs.writeFileSync('./database/welcome.json', JSON.stringify(_welkom))
+reply(`\`\`\`Sukses ✅, Mengaktifkan fitur welcome di group\`\`\` *${groupMetadata.subject}*`)
+} else if ((args[0]) === 'off') {
+if (!isWelkom) return reply('*welcome sudah off sebelumnya !!*')
+_welkom.splice(from, 1)
+fs.writeFileSync('./database/welcome.json', JSON.stringify(_welkom))
+reply(`\`\`\`Sukses ✅, Menonaktifkan fitur welcome di group\`\`\` *${groupMetadata.subject}*`)
+} else {
+reply('*on untuk mengaktifkan, off untuk menonaktifkan*')
 }
-               break
+break
 case 'antilink':
 if (!isGroup) return reply(mess.only.group)
 if (!isGroupAdmins && !mek.key.fromMe) return reply(mess.only.admin)
